@@ -1,7 +1,54 @@
 #include <iostream>
 #include <string>
+#include <vector>
+#include <fstream>
+#include <cassert>
 
 #include <boost/program_options.hpp>
+
+void preprocess(std::string& in)
+{
+	// look for comments-- comments are ; or /* */ format
+	
+	
+	// remove the ; comments
+	for(std::string::size_type next_semicolon = in.find(';', next_semicolon); next_semicolon != std::string::npos; next_semicolon = in.find(';', next_semicolon))
+	{
+		std::string::size_type next_newline = in.find('\n', next_semicolon);
+		in.erase(next_semicolon, next_newline - next_semicolon);
+	}
+	
+	// remove the /**/ comments
+	// remove the ; comments
+	for(std::string::size_type next_start = in.find("/*", next_start); next_start != std::string::npos; next_start = in.find("/*", next_start))
+	{
+		std::string::size_type next_newline = in.find("*/", next_start);
+		in.erase(next_start, next_newline - next_start);
+	}
+	
+}
+
+std::vector<char> compile(const std::vector<std::string>& filesToCompile)
+{
+	std::string in_buffer;
+	// read the files into one buffer
+	for(const auto& fileToRead : filesToCompile)
+	{
+		std::string line;
+		std::cout << "Trying to read from file: " << fileToRead << std::endl;
+		std::ifstream in_stream(fileToRead);
+		assert(in_stream.is_open());
+		while(std::getline(in_stream, line))
+		{
+			in_buffer.append(line + '\n');
+		}
+	}
+	// read a line at a time-- one line = one instructon
+	preprocess(in_buffer);
+	std::cout << in_buffer;
+	
+	return {};
+}
 
 int main(int argc, char **argv) {
 	
@@ -34,18 +81,13 @@ int main(int argc, char **argv) {
 		boost::program_options::command_line_parser(argc, argv).options(all_options).positional(input_positional).run(), options_map);
 	boost::program_options::notify(options_map);
 	
+	// if we have a help command, then print the help
 	if(options_map.count("help"))
 	{
 		std::cout << all_options;
 		return 1;
 	}
 	
-	std::cout << output_file << std::endl;
-	for(const auto& elem : options_map["input"].as<std::vector<std::string>>())
-	{
-		std::cout << elem << ":";
-	}
-	std::cout << std::endl;
-	
+	compile(options_map["input"].as<std::vector<std::string>>());
 	
 }
