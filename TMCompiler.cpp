@@ -12,18 +12,17 @@ void preprocess(std::string& in)
 	
 	
 	// remove the ; comments
-	for(std::string::size_type next_semicolon = in.find(';', next_semicolon); next_semicolon != std::string::npos; next_semicolon = in.find(';', next_semicolon))
+	for(std::string::size_type next_semicolon = in.find(';', 0); next_semicolon != std::string::npos; next_semicolon = in.find(';', next_semicolon))
 	{
 		std::string::size_type next_newline = in.find('\n', next_semicolon);
 		in.erase(next_semicolon, next_newline - next_semicolon);
 	}
 	
 	// remove the /**/ comments
-	// remove the ; comments
-	for(std::string::size_type next_start = in.find("/*", next_start); next_start != std::string::npos; next_start = in.find("/*", next_start))
+	for(std::string::size_type next_start = in.find("/*", 0); next_start != std::string::npos; next_start = in.find("/*", next_start))
 	{
 		std::string::size_type next_newline = in.find("*/", next_start);
-		in.erase(next_start, next_newline - next_start);
+		in.erase(next_start, next_newline - next_start + 2);
 	}
 	
 }
