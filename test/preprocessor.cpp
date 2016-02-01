@@ -12,7 +12,7 @@ BOOST_AUTO_TEST_CASE(preprocessor_semicolon_comment)
 		"nop;\n"
 		"qrs;tuv;wxy\n"
 		"z";
-		
+	
 	DefaultPreprocessor pre(src.begin(), src.end());
 	pre.removeSemicolonComments();
 	std::string actual = pre.getWorkingData();
@@ -36,7 +36,7 @@ BOOST_AUTO_TEST_CASE(preprocessor_slashstar_comment)
 		"nop\n"
 		"qrs/*tuvwxy\n"
 		"z";
-		
+	
 	DefaultPreprocessor pre(src.begin(), src.end());
 	pre.removeSlashStarComments();
 	std::string actual = pre.getWorkingData();
@@ -57,7 +57,7 @@ BOOST_AUTO_TEST_CASE(preprocessor_combined)
 		"no;p\n"
 		"qr;s/*tuvwxy\n"
 		"z";
-		
+	
 	DefaultPreprocessor pre(src.begin(), src.end());
 	std::string actual = pre();
 	std::string expected = 
