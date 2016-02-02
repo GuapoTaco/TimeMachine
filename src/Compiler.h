@@ -1,3 +1,5 @@
+#pragma once
+
 #include <string>
 #include <iostream>
 #include <cassert>
@@ -25,14 +27,14 @@ public:
 			{
 				source.append(line + '\n');
 			}
+			
+		
 		}	
 	}
 	
 	void operator()()
 	{
-		Preprocessor pre{source.begin(), source.end()};
 		
-		std::string preprocessedSource = pre();
 	}
 	
 	std::string source;

@@ -1,15 +1,15 @@
 
 SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH FALSE)
 
-
+# NOTE: please keep these in alphebetical order
 add_library( tmlibs SHARED
 	Compiler.cpp
 	Compiler.h
 	DefaultPreprocessor.cpp
 	DefaultPreprocessor.h
-	RegisterPattern.h
 	DefaultPreprocessor.cpp 
 	DefaultPreprocessor.h 
+	Operation.h
 	RegisterPattern.h
 )
 target_link_libraries(tmlibs 

@@ -1,33 +1,40 @@
+#pragma once
+
 #include <iostream>
 #include <array>
+#include <cstdint>
+
+
 
 class RegisterPattern 
 {
-	uint8_t registerID; // really only 3 bits
-	bool deref;
-	uint8_t timeShift; // really only 4 bits
-	int32_t valueToAdd;
 	
-	// validates that the the values are within an acceptable range
-	bool isValid() 
+	enum class Register 
 	{
-		return 
-			registerID 	<= 0b111 &&
-			timeShift 	<= 0b1111;
-	}
+		literal = 	0b00000000,
+		a = 		0b00100000,
+		b = 		0b01000000,
+		c = 		0b01100000,
+		d = 		0b10000000,
+		e = 		0b10100000,
+		sp = 		0b11000000,
+		bp = 		0b11100000
+	};
+	Register register;
+	bool deref;
+	uint8_t timeShift; // cannot be more than 
+	int32_t valueToAdd;
 	
 	std::array<char, 5> toBinary() 
 	{
 		// make sure it is valid
-		if(!isValid()) {
-			throw std::runtime_error("Cannot convert an invalid RegisterPattern to binary");
+		if(!timeShift > 0b00001111) {
+			throw std::out_of_range("Cannot convert an invalid RegisterPattern to binary. Time shift too large");
 		}
 		
 		std::array<char, 5> ret = {0, 0, 0, 0, 0};
 		
-		ret[0] |= registerID << 5;
-		ret[0] |= (uint8_t) deref << 4;
-		ret[0] |= timeShift;
+		ret[0] = register | ((uint8_t)deref << 4) | timeShift;
 		
 		ret[1] = (valueToAdd >> 24) & 0xFF;
 		ret[2] = (valueToAdd >> 16) & 0xFF;
