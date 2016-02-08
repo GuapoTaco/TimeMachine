@@ -1,6 +1,8 @@
 
 SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH FALSE)
 
+add_definitions("-DBOOST_HANA_CONFIG_ENABLE_STRING_UDL=1")
+
 # NOTE: please keep these in alphebetical order
 add_library( tmlibs SHARED
 	Compiler.cpp
@@ -9,7 +11,7 @@ add_library( tmlibs SHARED
 	DefaultPreprocessor.h
 	DefaultPreprocessor.cpp 
 	DefaultPreprocessor.h 
-	Operation.h
+	OperationPattern.h
 	RegisterPattern.h
 )
 target_link_libraries(tmlibs 
@@ -19,6 +21,7 @@ target_link_libraries(tmlibs
 target_compile_features(tmlibs PUBLIC
 	cxx_right_angle_brackets
 	cxx_auto_type
+	cxx_variable_templates
 )
 install(TARGETS tmlibs LIBRARY DESTINATION lib)
 
@@ -32,6 +35,7 @@ target_link_libraries(tmc tmlibs
 target_compile_features(tmc PUBLIC
 	cxx_right_angle_brackets
 	cxx_auto_type
+	cxx_variable_templates
 )
 install(TARGETS tmc RUNTIME DESTINATION bin)
 

@@ -4,10 +4,12 @@
 #include <iostream>
 #include <cassert>
 #include <fstream>
+#include <vector>
 
 #include "DefaultPreprocessor.h"
+#include "DefaultParser.h"
 
-template<typename Preprocessor = DefaultPreprocessor>
+template<typename Preprocessor = DefaultPreprocessor, typename Parser = DefaultParser>
 class Compiler 
 {
 public:
@@ -38,4 +40,5 @@ public:
 	}
 	
 	std::string source;
+	std::vector<uint8_t>  binaryOutput;
 };
